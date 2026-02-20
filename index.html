@@ -239,6 +239,24 @@
             font-weight: 600;
         }
 
+        .view-dashboard-btn {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            padding: 6px 12px;
+            font-size: 0.9em;
+            width: auto;
+            margin-left: 5px;
+        }
+
+        .view-dashboard-btn:hover {
+            background: linear-gradient(135deg, #218838 0%, #1aa179 100%);
+        }
+
+        .action-cell {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -413,7 +431,12 @@
                     <td>${student.course}</td>
                     <td><strong>${student.marks}</strong></td>
                     <td><strong style="color: ${getGradeColor(grade)}">${grade}</strong></td>
-                    <td><button class="delete-btn" onclick="deleteStudent(${student.id})">Delete</button></td>
+                    <td>
+                        <div class="action-cell">
+                            <a href="dashboard.html?id=${student.id}" class="view-dashboard-btn">📊 Dashboard</a>
+                            <button class="delete-btn" onclick="deleteStudent(${student.id})">Delete</button>
+                        </div>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });

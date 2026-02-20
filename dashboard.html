@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .header-content p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .student-info {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .info-label {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+
+        .info-value {
+            color: #333;
+            font-size: 1.3em;
+            font-weight: 700;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2.2em;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .subjects-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .subjects-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .subject-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .subject-name {
+            color: #333;
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .marks-display {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .marks-value {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.3em;
+        }
+
+        .grade-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.95em;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .add-subject-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .add-subject-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            padding: 6px 12px;
+            font-size: 0.85em;
+            width: auto;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .performance-chart {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .performance-chart h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .chart-item {
+            margin-bottom: 20px;
+        }
+
+        .chart-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .chart-label-name {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .chart-label-value {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .chart-bar {
+            width: 100%;
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .chart-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 12px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            color: #666;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>📊 Personal Dashboard</h1>
+                <p id="studentTitle"></p>
+            </div>
+            <a href="index.html" class="back-btn">← Back to Portal</a>
+        </header>
+
+        <!-- Student Information -->
+        <div class="student-info">
+            <div class="info-grid">
+                <div class="info-item">
+                    <div class="info-label">Roll Number</div>
+                    <div class="info-value" id="displayRollNo">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Student Name</div>
+                    <div class="info-value" id="displayStudentName">-</div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-value" id="totalSubjects">0</div>
+                    <div class="stat-label">Total Subjects</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="avgMarks">0</div>
+                    <div class="stat-label">Average Marks</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="highestMarks">0</div>
+                    <div class="stat-label">Highest Marks</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="lowestMarks">0</div>
+                    <div class="stat-label">Lowest Marks</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        <div class="success-message" id="successMessage">Subject added successfully!</div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- Add Subject Section -->
+        <div class="add-subject-section">
+            <h2>Add Subject Marks</h2>
+            <form id="subjectForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name:</label>
+                        <input type="text" id="subjectName" placeholder="e.g., Data Structures" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectMarks">Marks (0-100):</label>
+                        <input type="number" id="subjectMarks" min="0" max="100" placeholder="Enter marks" required>
+                    </div>
+                </div>
+                <button type="submit">Add Subject</button>
+            </form>
+        </div>
+
+        <!-- Subjects Display -->
+        <div class="subjects-section">
+            <h2>📚 Your Subjects</h2>
+            <div class="subjects-grid" id="subjectsGrid">
+                <!-- Subject cards will be added here dynamically -->
+            </div>
+        </div>
+
+        <!-- Performance Chart -->
+        <div class="performance-chart">
+            <h2>📈 Performance Overview</h2>
+            <div id="performanceChart">
+                <!-- Performance bars will be added here dynamically -->
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>&copy; 2026 Students Marks Portal | Personal Dashboard</p>
+        </footer>
+    </div>
+
+    <script>
+        // Get student ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const studentId = urlParams.get('id');
+
+        // Get all students and current student data
+        const allStudents = JSON.parse(localStorage.getItem('students')) || [];
+        let currentStudent = allStudents.find(s => s.id == studentId);
+
+        // Initialize student if not found
+        if (!currentStudent) {
+            alert('Student not found!');
+            window.location.href = 'index.html';
+        }
+
+        // Initialize subjects from localStorage
+        function getStudentSubjects() {
+            const allSubjects = JSON.parse(localStorage.getItem('studentSubjects')) || {};
+            return allSubjects[studentId] || [];
+        }
+
+        let studentSubjects = getStudentSubjects();
+
+        // Update subject list in storage
+        function updateSubjectsStorage() {
+            const allSubjects = JSON.parse(localStorage.getItem('studentSubjects')) || {};
+            allSubjects[studentId] = studentSubjects;
+            localStorage.setItem('studentSubjects', JSON.stringify(allSubjects));
+        }
+
+        // Display student information
+        function displayStudentInfo() {
+            document.getElementById('studentTitle').textContent = currentStudent.name;
+            document.getElementById('displayRollNo').textContent = currentStudent.rollNo;
+            document.getElementById('displayStudentName').textContent = currentStudent.name;
+        }
+
+        // Get grade based on marks
+        function getGrade(marks) {
+            if (marks >= 90) return 'A';
+            if (marks >= 80) return 'B';
+            if (marks >= 70) return 'C';
+            if (marks >= 60) return 'D';
+            return 'F';
+        }
+
+        // Get color for grade
+        function getGradeColor(grade) {
+            const colors = {
+                'A': '#28a745',
+                'B': '#667eea',
+                'C': '#ffc107',
+                'D': '#fd7e14',
+                'F': '#dc3545'
+            };
+            return colors[grade] || '#333';
+        }
+
+        // Render subject cards
+        function renderSubjects() {
+            const subjectsGrid = document.getElementById('subjectsGrid');
+            subjectsGrid.innerHTML = '';
+
+            if (studentSubjects.length === 0) {
+                subjectsGrid.innerHTML = '<p style="color: #999; grid-column: 1/-1; text-align: center; padding: 40px 20px;">No subjects added yet. Add your first subject!</p>';
+                return;
+            }
+
+            studentSubjects.forEach((subject, index) => {
+                const grade = getGrade(subject.marks);
+                const card = document.createElement('div');
+                card.className = 'subject-card';
+                card.innerHTML = `
+                    <div class="subject-name">${subject.name}</div>
+                    <div class="marks-display">
+                        <span class="marks-value">${subject.marks}</span>
+                        <span class="grade-badge" style="background: ${getGradeColor(grade)}">${grade}</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${subject.marks}%"></div>
+                    </div>
+                    <div style="margin-top: 10px; text-align: right;">
+                        <button class="delete-btn" onclick="deleteSubject(${index})">Delete</button>
+                    </div>
+                `;
+                subjectsGrid.appendChild(card);
+            });
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalSubjects = studentSubjects.length;
+            const avgMarks = totalSubjects > 0 
+                ? Math.round(studentSubjects.reduce((sum, s) => sum + s.marks, 0) / totalSubjects)
+                : 0;
+            const highestMarks = totalSubjects > 0 ? Math.max(...studentSubjects.map(s => s.marks)) : 0;
+            const lowestMarks = totalSubjects > 0 ? Math.min(...studentSubjects.map(s => s.marks)) : 0;
+
+            document.getElementById('totalSubjects').textContent = totalSubjects;
+            document.getElementById('avgMarks').textContent = avgMarks;
+            document.getElementById('highestMarks').textContent = highestMarks;
+            document.getElementById('lowestMarks').textContent = lowestMarks;
+
+            updatePerformanceChart();
+        }
+
+        // Update performance chart
+        function updatePerformanceChart() {
+            const chart = document.getElementById('performanceChart');
+            chart.innerHTML = '';
+
+            if (studentSubjects.length === 0) {
+                chart.innerHTML = '<p style="color: #999; text-align: center; padding: 40px;">Add subjects to see performance overview</p>';
+                return;
+            }
+
+            studentSubjects.forEach(subject => {
+                const chartItem = document.createElement('div');
+                chartItem.className = 'chart-item';
+                chartItem.innerHTML = `
+                    <div class="chart-label">
+                        <span class="chart-label-name">${subject.name}</span>
+                        <span class="chart-label-value">${subject.marks}%</span>
+                    </div>
+                    <div class="chart-bar">
+                        <div class="chart-bar-fill" style="width: ${subject.marks}%">
+                            ${subject.marks > 20 ? subject.marks : ''}
+                        </div>
+                    </div>
+                `;
+                chart.appendChild(chartItem);
+            });
+        }
+
+        // Add subject
+        document.getElementById('subjectForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const subjectName = document.getElementById('subjectName').value.trim();
+            const subjectMarks = parseInt(document.getElementById('subjectMarks').value);
+
+            // Validation
+            if (!subjectName) {
+                showError('Please enter subject name');
+                return;
+            }
+
+            if (isNaN(subjectMarks) || subjectMarks < 0 || subjectMarks > 100) {
+                showError('Marks must be between 0 and 100');
+                return;
+            }
+
+            // Check for duplicate subject
+            if (studentSubjects.some(s => s.name.toLowerCase() === subjectName.toLowerCase())) {
+                showError('Subject already exists');
+                return;
+            }
+
+            const newSubject = {
+                id: Math.max(...studentSubjects.map(s => s.id || 0), 0) + 1,
+                name: subjectName,
+                marks: subjectMarks
+            };
+
+            studentSubjects.push(newSubject);
+            updateSubjectsStorage();
+
+            // Reset form
+            this.reset();
+            showSuccess();
+            renderSubjects();
+            updateStats();
+        });
+
+        // Delete subject
+        function deleteSubject(index) {
+            if (confirm('Are you sure you want to delete this subject?')) {
+                studentSubjects.splice(index, 1);
+                updateSubjectsStorage();
+                renderSubjects();
+                updateStats();
+            }
+        }
+
+        // Show success message
+        function showSuccess() {
+            const msg = document.getElementById('successMessage');
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 3000);
+        }
+
+        // Show error message
+        function showError(message) {
+            const msg = document.getElementById('errorMessage');
+            msg.textContent = message;
+            msg.style.display = 'block';
+            setTimeout(() => {
+                msg.style.display = 'none';
+            }, 4000);
+        }
+
+        // Initial render
+        displayStudentInfo();
+        renderSubjects();
+        updateStats();
+    </script>
+</body>
+</html>
